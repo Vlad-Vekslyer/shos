@@ -1,5 +1,14 @@
+import { useEffect } from "react"
+
 export default function Screen(): JSX.Element {
-    return (
-        <canvas height={500} width={500} />
-    )
+	const hi = 5;
+
+	useEffect(() => {
+		let t = hi + 5;
+		return
+	}, [])
+
+	return (
+		<canvas height={500} width={500} />
+	)
 }

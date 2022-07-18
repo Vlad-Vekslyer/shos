@@ -1,6 +1,12 @@
 {
-    "extends": [
-        "react-app",
-        "react-app/jest"
-    ]
+	"root": true,
+	"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended",
+		"react-app",
+		"react-app/jest"
+	],
+	"rules": {
+		"react/react-in-jsx-scope": "off"
+	}
 }
