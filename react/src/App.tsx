@@ -1,8 +1,8 @@
 import System from "./components/System";
-import init, { greet } from "./pkg/rust";
+import initWasm, { greet } from "./pkg/rust";
 
 function App() {
-  init().then(() => {
+  initWasm().then(() => {
     greet();
   }).catch(e => {
     console.error(e);
