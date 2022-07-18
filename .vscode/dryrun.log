@@ -1,0 +1,5 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/vlad/Development/shos'
+cd ./react; npm run start
+make: Leaving directory '/home/vlad/Development/shos'
+ 

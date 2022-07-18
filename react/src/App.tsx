@@ -8,7 +8,6 @@ function App() {
     console.error(e);
   })
 
-
   return (
     <>
       <System />
