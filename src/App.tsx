@@ -1,9 +1,9 @@
-import Screen from "./components/Screen";
+import System from "./components/System";
 
 function App() {
   return (
     <>
-      <Screen />
+      <System />
     </>
   )
 }
