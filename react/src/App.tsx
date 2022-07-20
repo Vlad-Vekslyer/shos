@@ -1,17 +1,21 @@
+import { useState } from "react";
+import { When } from "react-if";
+import { useAsyncEffect } from "use-async-effect";
 import System from "./components/System";
-import initWasm, { greet } from "./pkg/rust";
+import initWasm from "./pkg/rust";
 
 function App() {
-  initWasm().then(() => {
-    greet();
-  }).catch(e => {
-    console.error(e);
-  })
+  const [loading, setLoading] = useState(true)
+
+  useAsyncEffect(async () => {
+    await initWasm();
+    setLoading(false)
+  }, [])
 
   return (
-    <>
+    <When condition={!loading}>
       <System />
-    </>
+    </When>
   )
 }
 

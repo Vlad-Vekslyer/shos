@@ -37,6 +37,7 @@ yarn-error.log*
 
 # production
 /build
+rust/target
 
 # misc
 .DS_Store
