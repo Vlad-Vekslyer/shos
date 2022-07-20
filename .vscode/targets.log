@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun Jul 17 23:15:52 2022
+# Make data base, printed on Tue Jul 19 21:31:29 2022
 
 # Variables
 
@@ -51,7 +51,7 @@ SNAP_DATA = /var/snap/code/101
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:57100
+JOURNAL_STREAM = 8:60800
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -73,11 +73,11 @@ XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/d
 # environment
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
-MANAGERPID = 1828
+MANAGERPID = 1888
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
-VSCODE_CWD = /home/vlad/Development
+VSCODE_CWD = /home/vlad/Development/learn-rust/wasm-game-of-life
 # environment
 GSETTINGS_SCHEMA_DIR = /snap/code/101/usr/share/glib-2.0/schemas
 # default
@@ -87,7 +87,7 @@ PATH = /home/vlad/.local/bin:/home/vlad/.nvm/versions/node/v16.15.0/bin:/home/vl
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/vlad-MS-7C87:@/tmp/.ICE-unix/2039,unix/vlad-MS-7C87:/tmp/.ICE-unix/2039
+SESSION_MANAGER = local/vlad-MS-7C87:@/tmp/.ICE-unix/2102,unix/vlad-MS-7C87:/tmp/.ICE-unix/2102
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -105,7 +105,7 @@ DISABLE_WAYLAND = 1
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = acc09f0b3da8424d8473e2edafd71ae1
+INVOCATION_ID = 711935f1ec41480faaaf4177a2f6eb9e
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/101/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # default
@@ -117,7 +117,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 2418
+GIO_LAUNCHED_DESKTOP_FILE_PID = 13297
 # automatic
 %F = $(notdir $%)
 # environment
@@ -129,7 +129,7 @@ PWD = /home/vlad/Development/shos
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2001
+SSH_AGENT_PID = 2067
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = Unity
 # environment
@@ -169,7 +169,7 @@ MAKELEVEL := 0
 # environment
 SNAP_REAL_HOME = /home/vlad
 # environment
-VSCODE_GIT_IPC_HANDLE = /run/user/1000/vscode-git-2fbeb80471.sock
+VSCODE_GIT_IPC_HANDLE = /run/user/1000/vscode-git-40bb368513.sock
 # environment
 COLORTERM = truecolor
 # default
@@ -181,7 +181,7 @@ QT_IM_MODULE = ibus
 # environment
 SNAP_USER_DATA = /home/vlad/snap/code/101
 # environment
-SHLVL = 2
+SHLVL = 1
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # default
@@ -271,7 +271,7 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 2582
+VSCODE_PID = 13351
 # variable set hash-table stats:
 # Load=131/1024=13%, Rehash=0, Collisions=17/156=11%
 
@@ -287,10 +287,10 @@ VSCODE_PID = 2582
 
 # Implicit Rules
 
-# No implicit rules.
-
  
 make: *** No rule to make target 'all'.  Stop.
+
+# No implicit rules.
 
 # Files
 
@@ -311,7 +311,7 @@ compile-wasm:
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-17 23:01:47.216397185
+#  Last modified 2022-07-19 20:14:35.936335808
 #  File has been updated.
 #  Successfully updated.
 
@@ -342,6 +342,6 @@ run-web:
 # strcache performance: lookups = 23 / hit rate = 26%
 # hash-table stats:
 # Load=17/8192=0%, Rehash=0, Collisions=1/23=4%
-# Finished Make data base on Sun Jul 17 23:15:52 2022
+# Finished Make data base on Tue Jul 19 21:31:29 2022
 
  
