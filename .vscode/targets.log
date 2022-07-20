@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Jul 19 21:31:29 2022
+# Make data base, printed on Tue Jul 19 21:52:21 2022
 
 # Variables
 
@@ -275,6 +277,7 @@ VSCODE_PID = 13351
 # variable set hash-table stats:
 # Load=131/1024=13%, Rehash=0, Collisions=17/156=11%
 
+ 
 # Pattern-specific Variable Values
 
 # No pattern-specific variable values.
@@ -286,9 +289,6 @@ VSCODE_PID = 13351
 # 10 files, no impossibilities in 1 directories.
 
 # Implicit Rules
-
- 
-make: *** No rule to make target 'all'.  Stop.
 
 # No implicit rules.
 
@@ -342,6 +342,6 @@ run-web:
 # strcache performance: lookups = 23 / hit rate = 26%
 # hash-table stats:
 # Load=17/8192=0%, Rehash=0, Collisions=1/23=4%
-# Finished Make data base on Tue Jul 19 21:31:29 2022
+# Finished Make data base on Tue Jul 19 21:52:21 2022
 
  
