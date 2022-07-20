@@ -19,9 +19,15 @@ export default function System(): JSX.Element {
 		const renderer = new THREE.WebGLRenderer({ antialias: true });
 		renderer.setSize(window.innerWidth, window.innerHeight);
 
-		if (!systemRef.current) throw new Error("Missing system container")
+		const containerElement = systemRef.current;
+		if (!containerElement) throw new Error("Missing system container")
 		renderer.render(scene, camera);
-		systemRef.current.appendChild(renderer.domElement);
+
+		containerElement.appendChild(renderer.domElement);
+
+		return () => {
+			containerElement.removeChild(renderer.domElement)
+		}
 	}, [])
 
 	return (
