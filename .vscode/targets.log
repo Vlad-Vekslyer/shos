@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -8,12 +6,12 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Jul 19 21:52:21 2022
+# Make data base, printed on Sat Jul 23 11:52:28 2022
 
 # Variables
 
 # environment
-VSCODE_GIT_ASKPASS_MAIN = /snap/code/101/usr/share/code/resources/app/extensions/git/dist/askpass-main.js
+VSCODE_GIT_ASKPASS_MAIN = /snap/code/102/usr/share/code/resources/app/extensions/git/dist/askpass-main.js
 # 'override' directive
 GNUMAKEFLAGS := 
 # automatic
@@ -49,11 +47,11 @@ CURDIR := /home/vlad/Development/shos
 # makefile
 SHELL = /bin/sh
 # environment
-SNAP_DATA = /var/snap/code/101
+SNAP_DATA = /var/snap/code/102
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:60800
+JOURNAL_STREAM = 8:61692
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -75,13 +73,13 @@ XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/d
 # environment
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
-MANAGERPID = 1888
+MANAGERPID = 1904
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
-VSCODE_CWD = /home/vlad/Development/learn-rust/wasm-game-of-life
+VSCODE_CWD = /home/vlad/Development/subset-web
 # environment
-GSETTINGS_SCHEMA_DIR = /snap/code/101/usr/share/glib-2.0/schemas
+GSETTINGS_SCHEMA_DIR = /snap/code/102/usr/share/glib-2.0/schemas
 # default
 MAKE_HOST := x86_64-pc-linux-gnu
 # environment
@@ -89,17 +87,17 @@ PATH = /home/vlad/.local/bin:/home/vlad/.nvm/versions/node/v16.15.0/bin:/home/vl
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/vlad-MS-7C87:@/tmp/.ICE-unix/2102,unix/vlad-MS-7C87:/tmp/.ICE-unix/2102
+SESSION_MANAGER = local/vlad-MS-7C87:@/tmp/.ICE-unix/2121,unix/vlad-MS-7C87:/tmp/.ICE-unix/2121
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
 GDK_PIXBUF_MODULE_FILE = /home/vlad/snap/code/common/.cache/gdk-pixbuf-loaders.cache
 # environment
-SNAP = /snap/code/101
+SNAP = /snap/code/102
 # environment
 NVM_BIN = /home/vlad/.nvm/versions/node/v16.15.0/bin
 # environment
-SNAP_VERSION = b06ae3b2
+SNAP_VERSION = 3b889b09
 # environment
 XDG_MENU_PREFIX = gnome-
 # environment
@@ -107,9 +105,9 @@ DISABLE_WAYLAND = 1
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 711935f1ec41480faaaf4177a2f6eb9e
+INVOCATION_ID = 3985431d5ec14c31992f1ffc4a42836e
 # environment
-GDK_PIXBUF_MODULEDIR = /snap/code/101/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
+GDK_PIXBUF_MODULEDIR = /snap/code/102/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # default
 .FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
 # environment
@@ -119,7 +117,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 13297
+GIO_LAUNCHED_DESKTOP_FILE_PID = 2642
 # automatic
 %F = $(notdir $%)
 # environment
@@ -131,7 +129,7 @@ PWD = /home/vlad/Development/shos
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2067
+SSH_AGENT_PID = 2086
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = Unity
 # environment
@@ -145,7 +143,7 @@ LESSCLOSE = /usr/bin/lesspipe %s %s
 # environment
 VSCODE_CLI = 1
 # environment
-VSCODE_CODE_CACHE_PATH = /home/vlad/.config/Code/CachedData/b06ae3b2d2dbfe28bca3134cc6be65935cdfea6a
+VSCODE_CODE_CACHE_PATH = /home/vlad/.config/Code/CachedData/3b889b090b5ad5793f524b5d1d39fda662b96a2a
 # environment
 LOGNAME = vlad
 # environment
@@ -171,7 +169,7 @@ MAKELEVEL := 0
 # environment
 SNAP_REAL_HOME = /home/vlad
 # environment
-VSCODE_GIT_IPC_HANDLE = /run/user/1000/vscode-git-40bb368513.sock
+VSCODE_GIT_IPC_HANDLE = /run/user/1000/vscode-git-5aecfb5805.sock
 # environment
 COLORTERM = truecolor
 # default
@@ -181,7 +179,7 @@ MAKECMDGOALS := all
 # environment
 QT_IM_MODULE = ibus
 # environment
-SNAP_USER_DATA = /home/vlad/snap/code/101
+SNAP_USER_DATA = /home/vlad/snap/code/102
 # environment
 SHLVL = 1
 # environment
@@ -191,7 +189,7 @@ MAKE_VERSION := 4.2.1
 # environment
 USER = vlad
 # environment
-SNAP_REVISION = 101
+SNAP_REVISION = 102
 # makefile
 .DEFAULT_GOAL := run-web
 # environment
@@ -211,9 +209,9 @@ TERM_PROGRAM = vscode
 # environment
 LANGUAGE = en_CA:en
 # environment
-VSCODE_IPC_HOOK = /run/user/1000/vscode-d9811f1e-1.69.1-main.sock
+VSCODE_IPC_HOOK = /run/user/1000/vscode-d9811f1e-1.69.2-main.sock
 # environment
-VSCODE_GIT_ASKPASS_NODE = /snap/code/101/usr/share/code/code
+VSCODE_GIT_ASKPASS_NODE = /snap/code/102/usr/share/code/code
 # environment
 BAMF_DESKTOP_FILE_HINT = /var/lib/snapd/desktop/applications/code_code.desktop
 # makefile
@@ -223,7 +221,7 @@ MFLAGS = -pqrR
 # automatic
 *D = $(patsubst %/,%,$(dir $*))
 # environment
-TERM_PROGRAM_VERSION = 1.69.1
+TERM_PROGRAM_VERSION = 1.69.2
 # environment
 NVM_DIR = /home/vlad/.nvm
 # automatic
@@ -239,7 +237,7 @@ QT_ACCESSIBILITY = 1
 # environment
 DEFAULTS_PATH = /usr/share/gconf/ubuntu.default.path
 # environment
-GIT_ASKPASS = /snap/code/101/usr/share/code/resources/app/extensions/git/dist/askpass.sh
+GIT_ASKPASS = /snap/code/102/usr/share/code/resources/app/extensions/git/dist/askpass.sh
 # default
 MAKEFILES := 
 # environment
@@ -273,11 +271,10 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 13351
+VSCODE_PID = 2833
 # variable set hash-table stats:
 # Load=131/1024=13%, Rehash=0, Collisions=17/156=11%
 
- 
 # Pattern-specific Variable Values
 
 # No pattern-specific variable values.
@@ -295,6 +292,9 @@ VSCODE_PID = 13351
 # Files
 
 # Not a target:
+ 
+make: *** No rule to make target 'all'.  Stop.
+
 all:
 #  Command line target.
 #  Implicit rule search has been done.
@@ -342,6 +342,6 @@ run-web:
 # strcache performance: lookups = 23 / hit rate = 26%
 # hash-table stats:
 # Load=17/8192=0%, Rehash=0, Collisions=1/23=4%
-# Finished Make data base on Tue Jul 19 21:52:21 2022
+# Finished Make data base on Sat Jul 23 11:52:28 2022
 
  
