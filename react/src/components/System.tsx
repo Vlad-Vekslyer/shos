@@ -1,17 +1,12 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
+import isometricCamera from "../3d-utils/isometricCamera";
+
 export default function System(): JSX.Element {
 	const systemRef = useRef<HTMLDivElement>(null)
 
 	useEffect(() => {
-		const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 10);
-		camera.position.z = 3;
-		camera.position.y = 0.75;
-		camera.position.x = -1;
-		camera.rotateX(-0.25);
-		camera.rotateY(-0.3)
-
 		const scene = new THREE.Scene();
 
 		const axesHelper = new THREE.AxesHelper(1);
@@ -27,7 +22,7 @@ export default function System(): JSX.Element {
 
 		const containerElement = systemRef.current;
 		if (!containerElement) throw new Error("Missing system container")
-		renderer.render(scene, camera);
+		renderer.render(scene, isometricCamera);
 
 		containerElement.appendChild(renderer.domElement);
 
