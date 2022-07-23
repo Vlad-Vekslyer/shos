@@ -6,9 +6,9 @@ export default function System(): JSX.Element {
 
 	useEffect(() => {
 		const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 10);
-		camera.position.z = 1;
-		camera.position.y = 0.5;
-		camera.position.x = -0.6;
+		camera.position.z = 3;
+		camera.position.y = 0.75;
+		camera.position.x = -1;
 		camera.rotateX(-0.25);
 		camera.rotateY(-0.3)
 
