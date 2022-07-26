@@ -2,9 +2,19 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 import isometricCamera from "../3d-utils/isometricCamera";
+import init, { System as WasmSystem } from "../pkg/rust";
 
 export default function System(): JSX.Element {
 	const systemRef = useRef<HTMLDivElement>(null)
+
+	useEffect(() => {
+		init().then(wasm => {
+			const system = new WasmSystem();
+			const stream = system.getPlanetCoordinates();
+			const array = new Uint8Array(wasm.memory.buffer, stream.offset(), stream.size());
+			console.log(array);
+		})
+	}, [])
 
 	useEffect(() => {
 		const scene = new THREE.Scene();
