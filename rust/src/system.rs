@@ -1,18 +1,22 @@
-use crate::planet::Planet;
+use crate::{bytestream::ByteStream, planet::Planet};
 use wasm_bindgen::prelude::*;
 
+#[wasm_bindgen]
 struct System {
     planets: Vec<Planet>,
 }
 
 #[wasm_bindgen]
 impl System {
-    pub fn planets(&self) -> *const &[f32] {
-        let planet_slices: Vec<f32>;
-        for planet in self.planets {
+    pub fn planets(&self) -> ByteStream {
+        let mut planet_slices: Vec<f32> = vec![];
+        for planet in &self.planets {
             let slice = planet.as_slice();
-            planet_slices.push(slice);
+            for value in slice {
+                planet_slices.push(value);
+            }
         }
-        planet_slices.as_slice().as_ptr()
+        let stream = ByteStream::new(planet_slices.as_slice());
+        stream
     }
 }
