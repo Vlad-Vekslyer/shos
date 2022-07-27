@@ -2,21 +2,21 @@ use wasm_bindgen::prelude::wasm_bindgen;
 
 #[wasm_bindgen]
 pub struct ByteStream {
-    offset: *const u8,
+    offset: *const f32,
     size: usize,
 }
 
 #[wasm_bindgen]
 impl ByteStream {
     #[wasm_bindgen(constructor)]
-    pub fn new(bytes: &[u8]) -> ByteStream {
+    pub fn new(bytes: &[f32]) -> ByteStream {
         ByteStream {
             offset: bytes.as_ptr(),
             size: bytes.len(),
         }
     }
 
-    pub fn offset(&self) -> *const u8 {
+    pub fn offset(&self) -> *const f32 {
         self.offset
     }
 
