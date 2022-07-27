@@ -16,14 +16,15 @@ impl System {
 
     #[wasm_bindgen(js_name = "getPlanetCoordinates")]
     pub fn planets_coordinates(&self) -> ByteStream {
-        let mut planet_slices: Vec<f32> = vec![];
+        let mut planet_slices: Vec<u8> = vec![];
         for planet in &self.planets {
             let slice = planet.as_slice();
             for value in slice {
-                planet_slices.push(value);
+                let bytes = value.to_ne_bytes();
+                planet_slices.extend(bytes);
             }
         }
-        let stream = ByteStream::new(planet_slices.as_slice());
+        let stream = ByteStream::new(&planet_slices);
         stream
     }
 }

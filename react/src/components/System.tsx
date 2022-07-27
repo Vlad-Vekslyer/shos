@@ -11,7 +11,7 @@ export default function System(): JSX.Element {
 		init().then(wasm => {
 			const system = new WasmSystem();
 			const stream = system.getPlanetCoordinates();
-			const array = new Uint8Array(wasm.memory.buffer, stream.offset(), stream.size());
+			const array = new Float32Array(wasm.memory.buffer, stream.offset(), stream.size());
 			console.log(array);
 		})
 	}, [])
