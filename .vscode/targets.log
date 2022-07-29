@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Jul 26 18:07:31 2022
+# Make data base, printed on Thu Jul 28 21:02:30 2022
 
 # Variables
 
@@ -51,7 +51,7 @@ SNAP_DATA = /var/snap/code/102
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:61554
+JOURNAL_STREAM = 8:62512
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -73,7 +73,7 @@ XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/d
 # environment
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
-MANAGERPID = 1889
+MANAGERPID = 1907
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
@@ -87,7 +87,7 @@ PATH = /home/vlad/.local/bin:/home/vlad/.nvm/versions/node/v16.15.0/bin:/home/vl
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/vlad-MS-7C87:@/tmp/.ICE-unix/2104,unix/vlad-MS-7C87:/tmp/.ICE-unix/2104
+SESSION_MANAGER = local/vlad-MS-7C87:@/tmp/.ICE-unix/2120,unix/vlad-MS-7C87:/tmp/.ICE-unix/2120
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -105,7 +105,7 @@ DISABLE_WAYLAND = 1
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = 78813ef978fa4fe3a050c666e351be4a
+INVOCATION_ID = ac669d7f1af94e9b960fb0472f88d27e
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/102/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # default
@@ -117,7 +117,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 2531
+GIO_LAUNCHED_DESKTOP_FILE_PID = 2449
 # automatic
 %F = $(notdir $%)
 # environment
@@ -129,7 +129,7 @@ PWD = /home/vlad/Development/shos
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2068
+SSH_AGENT_PID = 2083
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = Unity
 # environment
@@ -271,12 +271,9 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 2596
+VSCODE_PID = 2499
 # variable set hash-table stats:
 # Load=131/1024=13%, Rehash=0, Collisions=17/156=11%
-
- 
-make: *** No rule to make target 'all'.  Stop.
 
 # Pattern-specific Variable Values
 
@@ -291,6 +288,9 @@ make: *** No rule to make target 'all'.  Stop.
 # Implicit Rules
 
 # No implicit rules.
+ 
+make: *** No rule to make target 'all'.  Stop.
+
 
 # Files
 
@@ -342,6 +342,6 @@ run-web:
 # strcache performance: lookups = 23 / hit rate = 26%
 # hash-table stats:
 # Load=17/8192=0%, Rehash=0, Collisions=1/23=4%
-# Finished Make data base on Tue Jul 26 18:07:31 2022
+# Finished Make data base on Thu Jul 28 21:02:30 2022
 
  

@@ -1,5 +1,5 @@
-run-web:
+web-start:
 	cd ./react; npm run start
 
-compile-wasm:
+wasm-compile:
 	cd ./rust; wasm-pack build --out-dir ../react/src/pkg --target web
