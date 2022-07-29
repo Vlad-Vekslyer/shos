@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import * as THREE from "three";
+import { useAsyncEffect } from "use-async-effect";
 
 import isometricCamera from "../3d-utils/isometricCamera";
 import init, { System as WasmSystem } from "../pkg/rust";
@@ -13,49 +14,42 @@ interface Planet {
 export default function System(): JSX.Element {
 	const systemRef = useRef<HTMLDivElement>(null)
 	const scene = useRef<THREE.Scene>(new THREE.Scene());
+	const renderer = useRef<THREE.WebGL1Renderer>(new THREE.WebGL1Renderer({ antialias: true }));
 
-	useEffect(() => {
-		init().then(wasm => {
-			const system = new WasmSystem();
-			const stream = system.getPlanetCoordinates();
-			const planetCoordinates = new Float32Array(wasm.memory.buffer, stream.offset(), stream.size());
+	useAsyncEffect(async () => {
+		if (!systemRef.current) throw new Error("Missing system container")
+		systemRef.current.appendChild(renderer.current.domElement);
 
-			const material = new THREE.MeshNormalMaterial();
+		const wasm = await init();
+		const system = new WasmSystem();
+		const stream = system.getPlanetCoordinates();
+		const planetCoordinates = new Float32Array(wasm.memory.buffer, stream.offset(), stream.size());
 
-			for (let i = 0; i < planetCoordinates.length; i += 3) {
-				const planet: Planet = {
-					x: planetCoordinates[i],
-					y: planetCoordinates[i + 1],
-					radius: planetCoordinates[i + 2]
-				}
-				const sphere = new THREE.SphereGeometry(planet.radius);
-				const mesh = new THREE.Mesh(sphere, material);
-				mesh.position.x = planet.x;
-				mesh.position.y = planet.y;
+		const material = new THREE.MeshNormalMaterial();
 
-				scene.current.add(mesh);
+		for (let i = 0; i < planetCoordinates.length; i += 3) {
+			const planet: Planet = {
+				x: planetCoordinates[i],
+				y: planetCoordinates[i + 1],
+				radius: planetCoordinates[i + 2]
 			}
-		})
-	}, [])
+			const sphere = new THREE.SphereGeometry(planet.radius);
+			const mesh = new THREE.Mesh(sphere, material);
+			mesh.position.x = planet.x;
+			mesh.position.y = planet.y;
 
-	useEffect(() => {
+			scene.current.add(mesh);
+		}
+
 		const axesHelper = new THREE.AxesHelper(1);
-
 		scene.current.add(axesHelper);
 
-		const renderer = new THREE.WebGLRenderer({ antialias: true });
-		renderer.setSize(window.innerWidth, window.innerHeight);
-
-		const containerElement = systemRef.current;
-		if (!containerElement) throw new Error("Missing system container")
-		renderer.render(scene.current, isometricCamera);
-
-		containerElement.appendChild(renderer.domElement);
-
-		return () => {
-			containerElement.removeChild(renderer.domElement)
-		}
-	}, [])
+		renderer.current.setSize(window.innerWidth, window.innerHeight);
+		renderer.current.render(scene.current, isometricCamera);
+	}, () => {
+		if (!systemRef.current) throw new Error("Missing system container")
+		systemRef.current.removeChild(renderer.current.domElement)
+	}, []);
 
 	return (
 		<div className="system" ref={systemRef} />
