@@ -18,7 +18,7 @@ pub struct System {
 impl System {
     #[wasm_bindgen(constructor)]
     pub fn new() -> System {
-        let planets = vec![Planet::new(0.0, 0.0, 0.2)];
+        let planets = vec![Planet::new(0.0, 0.0, 0.2), Planet::new(0.2, 0.0, 0.1)];
 
         let mut planet_slices: Vec<f32> = vec![];
         for planet in &planets {

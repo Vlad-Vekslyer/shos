@@ -1,9 +1,9 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import * as THREE from "three";
 import { useAsyncEffect } from "use-async-effect";
 
 import isometricCamera from "../3d-utils/isometricCamera";
-import init, { System as WasmSystem } from "../pkg/rust";
+import init, { InitOutput, System as WasmSystem } from "../pkg/rust";
 
 interface Planet {
 	x: number,
@@ -15,16 +15,18 @@ export default function System(): JSX.Element {
 	const systemRef = useRef<HTMLDivElement>(null)
 	const scene = useRef(new THREE.Scene());
 	const renderer = useRef(new THREE.WebGL1Renderer({ antialias: true }));
-	const [planetCount, setPlanetCount] = useState(0);
+	const wasm = useRef<InitOutput>();
 
 	useAsyncEffect(async () => {
 		if (!systemRef.current) throw new Error("Missing system container")
 		systemRef.current.appendChild(renderer.current.domElement);
 
-		const wasm = await init();
+		wasm.current = await init();
 		const system = new WasmSystem();
 		const stream = system.getPlanetCoordinates();
-		const planetCoordinates = new Float32Array(wasm.memory.buffer, stream.offset(), stream.size());
+		const planetCoordinates = new Float32Array(wasm.current.memory.buffer, stream.offset(), stream.size());
+
+		if (planetCoordinates.length % 3 !== 0) throw new Error("Wasm memory buffer length must be divisible by 3")
 
 		const material = new THREE.MeshNormalMaterial();
 
@@ -38,8 +40,9 @@ export default function System(): JSX.Element {
 			const mesh = new THREE.Mesh(sphere, material);
 			mesh.position.x = planet.x;
 			mesh.position.z = planet.y;
-			mesh.name = `planet_${planetCount}`;
-			setPlanetCount(planetCount + 1);
+			mesh.name = `planet_${i / 3}`;
+			scene.current.add(mesh);
+
 		}
 
 		const axesHelper = new THREE.AxesHelper(1);
