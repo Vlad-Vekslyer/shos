@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import * as THREE from "three";
 import { useAsyncEffect } from "use-async-effect";
 
@@ -13,8 +13,9 @@ interface Planet {
 
 export default function System(): JSX.Element {
 	const systemRef = useRef<HTMLDivElement>(null)
-	const scene = useRef<THREE.Scene>(new THREE.Scene());
-	const renderer = useRef<THREE.WebGL1Renderer>(new THREE.WebGL1Renderer({ antialias: true }));
+	const scene = useRef(new THREE.Scene());
+	const renderer = useRef(new THREE.WebGL1Renderer({ antialias: true }));
+	const [planetCount, setPlanetCount] = useState(0);
 
 	useAsyncEffect(async () => {
 		if (!systemRef.current) throw new Error("Missing system container")
@@ -37,8 +38,8 @@ export default function System(): JSX.Element {
 			const mesh = new THREE.Mesh(sphere, material);
 			mesh.position.x = planet.x;
 			mesh.position.z = planet.y;
-
-			scene.current.add(mesh);
+			mesh.name = `planet_${planetCount}`;
+			setPlanetCount(planetCount + 1);
 		}
 
 		const axesHelper = new THREE.AxesHelper(1);
