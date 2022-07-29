@@ -9,6 +9,6 @@ impl Planet {
         Planet { x, y, radius }
     }
     pub fn as_slice(&self) -> [f32; 3] {
-        [self.radius, self.y, self.x]
+        [self.x, self.y, self.radius]
     }
 }
