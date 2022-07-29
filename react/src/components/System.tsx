@@ -36,7 +36,7 @@ export default function System(): JSX.Element {
 			const sphere = new THREE.SphereGeometry(planet.radius);
 			const mesh = new THREE.Mesh(sphere, material);
 			mesh.position.x = planet.x;
-			mesh.position.y = planet.y;
+			mesh.position.z = planet.y;
 
 			scene.current.add(mesh);
 		}
