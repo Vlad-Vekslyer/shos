@@ -1,4 +1,6 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+make: *** No rule to make target 'all'.  Stop.
+
 # GNU Make 4.2.1
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2016 Free Software Foundation, Inc.
@@ -6,7 +8,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Jul 28 21:02:30 2022
+# Make data base, printed on Sat Jul 30 12:44:41 2022
 
 # Variables
 
@@ -51,7 +53,7 @@ SNAP_DATA = /var/snap/code/102
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:62512
+JOURNAL_STREAM = 8:67048
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -73,11 +75,11 @@ XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/d
 # environment
 DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
 # environment
-MANAGERPID = 1907
+MANAGERPID = 3533
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # environment
-VSCODE_CWD = /home/vlad/Development/subset-web
+VSCODE_CWD = /home/vlad/Development/subset-api
 # environment
 GSETTINGS_SCHEMA_DIR = /snap/code/102/usr/share/glib-2.0/schemas
 # default
@@ -87,7 +89,7 @@ PATH = /home/vlad/.local/bin:/home/vlad/.nvm/versions/node/v16.15.0/bin:/home/vl
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/vlad-MS-7C87:@/tmp/.ICE-unix/2120,unix/vlad-MS-7C87:/tmp/.ICE-unix/2120
+SESSION_MANAGER = local/vlad-MS-7C87:@/tmp/.ICE-unix/3748,unix/vlad-MS-7C87:/tmp/.ICE-unix/3748
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -105,7 +107,7 @@ DISABLE_WAYLAND = 1
 # environment
 ELECTRON_RUN_AS_NODE = 1
 # environment
-INVOCATION_ID = ac669d7f1af94e9b960fb0472f88d27e
+INVOCATION_ID = 0513b0c775fd49928eb3e932f07fbd60
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/102/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # default
@@ -117,7 +119,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 2449
+GIO_LAUNCHED_DESKTOP_FILE_PID = 4397
 # automatic
 %F = $(notdir $%)
 # environment
@@ -129,7 +131,7 @@ PWD = /home/vlad/Development/shos
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 2083
+SSH_AGENT_PID = 3712
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = Unity
 # environment
@@ -169,7 +171,7 @@ MAKELEVEL := 0
 # environment
 SNAP_REAL_HOME = /home/vlad
 # environment
-VSCODE_GIT_IPC_HANDLE = /run/user/1000/vscode-git-5aecfb5805.sock
+VSCODE_GIT_IPC_HANDLE = /run/user/1000/vscode-git-e46c9f7088.sock
 # environment
 COLORTERM = truecolor
 # default
@@ -191,7 +193,7 @@ USER = vlad
 # environment
 SNAP_REVISION = 102
 # makefile
-.DEFAULT_GOAL := run-web
+.DEFAULT_GOAL := web-start
 # environment
 XDG_CURRENT_DESKTOP = Unity
 # automatic
@@ -271,10 +273,11 @@ LANG = C
 # environment
 TERM = xterm-256color
 # environment
-VSCODE_PID = 2499
+VSCODE_PID = 4556
 # variable set hash-table stats:
 # Load=131/1024=13%, Rehash=0, Collisions=17/156=11%
 
+ 
 # Pattern-specific Variable Values
 
 # No pattern-specific variable values.
@@ -288,9 +291,6 @@ VSCODE_PID = 2499
 # Implicit Rules
 
 # No implicit rules.
- 
-make: *** No rule to make target 'all'.  Stop.
-
 
 # Files
 
@@ -301,32 +301,32 @@ all:
 #  File does not exist.
 #  File has not been updated.
 
-compile-wasm:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'makefile', line 5):
-	cd ./rust; wasm-pack build --out-dir ../react/src/pkg --target web
-
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-07-19 20:14:35.936335808
+#  Last modified 2022-07-28 21:07:15.620928614
 #  File has been updated.
 #  Successfully updated.
-
-run-web:
-#  Implicit rule search has not been done.
-#  Modification time never checked.
-#  File has not been updated.
-#  recipe to execute (from 'makefile', line 2):
-	cd ./react; npm run start
 
 # Not a target:
 .DEFAULT:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
+
+web-start:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 2):
+	cd ./react; npm run start
+
+wasm-compile:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'makefile', line 5):
+	cd ./rust; wasm-pack build --out-dir ../react/src/pkg --target web
 
 # files hash-table stats:
 # Load=6/1024=1%, Rehash=0, Collisions=0/16=0%
@@ -336,12 +336,12 @@ run-web:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 17 / storage = 143 B / avg = 8 B
-# current buf: size = 8162 B / used = 143 B / count = 17 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 17 / storage = 145 B / avg = 8 B
+# current buf: size = 8162 B / used = 145 B / count = 17 / avg = 8 B
 
 # strcache performance: lookups = 23 / hit rate = 26%
 # hash-table stats:
 # Load=17/8192=0%, Rehash=0, Collisions=1/23=4%
-# Finished Make data base on Thu Jul 28 21:02:30 2022
+# Finished Make data base on Sat Jul 30 12:44:41 2022
 
  

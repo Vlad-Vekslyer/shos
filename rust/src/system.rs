@@ -14,24 +14,31 @@ pub struct System {
     planet_slices: Vec<f32>,
 }
 
+impl System {
+    fn update_planet_slices(&mut self) {
+        let mut planet_slices: Vec<f32> = vec![];
+        for planet in &self.planets {
+            let slice = planet.as_slice();
+            for value in slice {
+                planet_slices.push(value);
+            }
+        }
+        self.planet_slices = planet_slices;
+    }
+}
+
 #[wasm_bindgen]
 impl System {
     #[wasm_bindgen(constructor)]
     pub fn new() -> System {
         let planets = vec![Planet::new(0.0, 0.0, 0.2), Planet::new(0.2, 0.0, 0.1)];
 
-        let mut planet_slices: Vec<f32> = vec![];
-        for planet in &planets {
-            let slice = planet.as_slice();
-            for value in slice {
-                planet_slices.push(value);
-            }
-        }
-
-        System {
+        let mut system = System {
             planets,
-            planet_slices,
-        }
+            planet_slices: vec![],
+        };
+        system.update_planet_slices();
+        system
     }
 
     #[wasm_bindgen(js_name = "getPlanetCoordinates")]
