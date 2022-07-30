@@ -23,6 +23,13 @@ impl System {
             self.planet_slices[starting_index + 2],
         ]
     }
+
+    fn set_planet_slice(&mut self, planet_num: usize, planet_slice: [f32; 3]) {
+        let starting_index = planet_num * 3;
+        self.planet_slices[starting_index] = planet_slice[0];
+        self.planet_slices[starting_index + 1] = planet_slice[1];
+        self.planet_slices[starting_index + 2] = planet_slice[2];
+    }
 }
 
 #[wasm_bindgen]
@@ -48,7 +55,16 @@ impl System {
     #[wasm_bindgen(js_name = "getPlanetCoordinates")]
     pub fn planets_coordinates(&self) -> ByteStream {
         log!("{:?}", self.planet_slices);
-        let stream = ByteStream::new(&self.planet_slices);
-        stream
+        ByteStream::new(&self.planet_slices)
+    }
+
+    pub fn tick(&mut self) -> ByteStream {
+        for planet_num in 1..self.planet_count {
+            let mut planet_slice = self.get_planet_slice(planet_num);
+            planet_slice[0] += 0.01;
+            planet_slice[1] += 0.01;
+            self.set_planet_slice(planet_num, planet_slice);
+        }
+        self.planets_coordinates()
     }
 }
