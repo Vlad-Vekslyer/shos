@@ -10,20 +10,18 @@ macro_rules! log {
 
 #[wasm_bindgen]
 pub struct System {
-    planets: Vec<Planet>,
+    planet_count: usize,
     planet_slices: Vec<f32>,
 }
 
 impl System {
-    fn update_planet_slices(&mut self) {
-        let mut planet_slices: Vec<f32> = vec![];
-        for planet in &self.planets {
-            let slice = planet.as_slice();
-            for value in slice {
-                planet_slices.push(value);
-            }
-        }
-        self.planet_slices = planet_slices;
+    fn get_planet_slice(&self, planet_num: usize) -> [f32; 3] {
+        let starting_index = planet_num * 3;
+        [
+            self.planet_slices[starting_index],
+            self.planet_slices[starting_index + 1],
+            self.planet_slices[starting_index + 2],
+        ]
     }
 }
 
@@ -33,12 +31,18 @@ impl System {
     pub fn new() -> System {
         let planets = vec![Planet::new(0.0, 0.0, 0.2), Planet::new(0.2, 0.0, 0.1)];
 
-        let mut system = System {
-            planets,
-            planet_slices: vec![],
-        };
-        system.update_planet_slices();
-        system
+        let mut planet_slices: Vec<f32> = vec![];
+        for planet in &planets {
+            let slice = planet.as_slice();
+            for value in slice {
+                planet_slices.push(value);
+            }
+        }
+
+        System {
+            planet_slices,
+            planet_count: planets.len(),
+        }
     }
 
     #[wasm_bindgen(js_name = "getPlanetCoordinates")]
