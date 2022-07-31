@@ -5,7 +5,7 @@ import { useAsyncEffect } from "use-async-effect";
 import getSphereName from "../3d-utils/getSphereName";
 
 import isometricCamera from "../3d-utils/isometricCamera";
-import init, { InitOutput, System as WasmSystem } from "../pkg/rust";
+import init, { System as WasmSystem } from "../pkg/rust";
 import AnimationLoop from "./AnimationLoop";
 
 interface Planet {
@@ -18,7 +18,6 @@ export default function System(): JSX.Element {
 	const systemRef = useRef<HTMLDivElement>(null)
 	const scene = useRef(new THREE.Scene());
 	const renderer = useRef(new THREE.WebGL1Renderer({ antialias: true }));
-	const wasm = useRef<InitOutput>();
 	const system = useRef<WasmSystem>();
 	const [loading, setLoading] = useState(true);
 
@@ -26,10 +25,10 @@ export default function System(): JSX.Element {
 		if (!systemRef.current) throw new Error("Missing system container")
 		systemRef.current.appendChild(renderer.current.domElement);
 
-		wasm.current = await init();
+		const wasm = await init();
 		system.current = new WasmSystem();
 		const stream = system.current.getPlanetCoordinates();
-		const planetCoordinates = new Float32Array(wasm.current.memory.buffer, stream.offset(), stream.size());
+		const planetCoordinates = new Float32Array(wasm.memory.buffer, stream.offset(), stream.size());
 
 		if (planetCoordinates.length % 3 !== 0) throw new Error("Wasm memory buffer length must be divisible by 3")
 
@@ -64,7 +63,7 @@ export default function System(): JSX.Element {
 		<>
 			<div className="system" ref={systemRef} />
 			<When condition={!loading}>
-				<AnimationLoop scene={scene.current} wasm={wasm.current as InitOutput} renderer={renderer.current} system={system.current as WasmSystem} />
+				<AnimationLoop scene={scene.current} renderer={renderer.current} system={system.current as WasmSystem} />
 			</When>
 		</>
 	)
