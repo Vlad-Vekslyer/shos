@@ -45,6 +45,8 @@ rust/target
 .env.development.local
 .env.test.local
 .env.production.local
+.vscode/*.log
+.vscode/targets.log
 
 npm-debug.log*
 yarn-debug.log*
