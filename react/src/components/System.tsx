@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import * as THREE from "three";
 import { useAsyncEffect } from "use-async-effect";
 import getSphereName from "../3d-utils/getSphereName";
@@ -13,51 +13,75 @@ interface Planet {
 	radius: number
 }
 
+function initializePlanets(wasm: InitOutput | null, system: WasmSystem | null): Planet[] {
+	if (!wasm || !system) throw new Error("Missing WebAssembly data");
+
+	const stream = system.getPlanetCoordinates();
+	const planetCoordinates = new Float32Array(wasm.memory.buffer, stream.offset(), stream.size());
+
+	if (planetCoordinates.length % 3 !== 0) throw new Error("Wasm memory buffer length must be divisible by 3")
+
+	let planets: Planet[] = [];
+	for (let i = 0; i < planetCoordinates.length; i += 3) {
+		planets.push({
+			x: planetCoordinates[i],
+			y: planetCoordinates[i + 1],
+			radius: planetCoordinates[i + 2]
+		})
+	}
+	return planets;
+}
+
+function addPlanetsToScene(planets: Planet[], scene: THREE.Scene): void {
+	planets.forEach((planet, i) => {
+		const material = new THREE.MeshNormalMaterial();
+		const sphere = new THREE.SphereGeometry(planet.radius);
+		const mesh = new THREE.Mesh(sphere, material);
+
+		mesh.position.x = planet.x;
+		mesh.position.z = planet.y;
+		mesh.name = getSphereName(i);
+
+		scene.add(mesh);
+	})
+}
+
+function addAxesHelperToScene(scene: THREE.Scene): void {
+	const axesHelper = new THREE.AxesHelper(1);
+	scene.add(axesHelper);
+}
+
+function configureRenderer(renderer: THREE.WebGL1Renderer, scene: THREE.Scene): void {
+	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.render(scene, isometricCamera);
+}
+
+function attachRenderer(renderer: THREE.WebGL1Renderer, container: HTMLDivElement | null): void {
+	if (!container) throw new Error("Missing container")
+	container.appendChild(renderer.domElement);
+}
+
 export default function System(): JSX.Element {
 	const systemContainer = useRef<HTMLDivElement>(null)
 	const scene = useRef(new THREE.Scene());
 	const renderer = useRef(new THREE.WebGL1Renderer({ antialias: true }));
 	const system = useRef<WasmSystem>();
 	const wasm = useRef<InitOutput>();
-	const executedOnce = useRef(false);
+	const isInitialized = useRef(false);
 	const [loading, setLoading] = useState(true);
 
 	useAsyncEffect(async () => {
-		if (executedOnce.current) return;
-		executedOnce.current = true;
-
-		if (!systemContainer.current) throw new Error("Missing system container")
+		if (isInitialized.current) return;
+		isInitialized.current = true;
 
 		wasm.current = await init();
 		system.current = new WasmSystem();
-		const stream = system.current.getPlanetCoordinates();
-		const planetCoordinates = new Float32Array(wasm.current.memory.buffer, stream.offset(), stream.size());
 
-		if (planetCoordinates.length % 3 !== 0) throw new Error("Wasm memory buffer length must be divisible by 3")
-
-		const material = new THREE.MeshNormalMaterial();
-
-		for (let i = 0; i < planetCoordinates.length; i += 3) {
-			const planet: Planet = {
-				x: planetCoordinates[i],
-				y: planetCoordinates[i + 1],
-				radius: planetCoordinates[i + 2]
-			}
-			const sphere = new THREE.SphereGeometry(planet.radius);
-			const mesh = new THREE.Mesh(sphere, material);
-			mesh.position.x = planet.x;
-			mesh.position.z = planet.y;
-			mesh.name = getSphereName(i / 3);
-			scene.current.add(mesh);
-		}
-
-		const axesHelper = new THREE.AxesHelper(1);
-		scene.current.add(axesHelper);
-
-		renderer.current.setSize(window.innerWidth, window.innerHeight);
-		renderer.current.render(scene.current, isometricCamera);
-
-		systemContainer.current.appendChild(renderer.current.domElement);
+		const planets = initializePlanets(wasm.current, system.current);
+		addPlanetsToScene(planets, scene.current);
+		addAxesHelperToScene(scene.current);
+		configureRenderer(renderer.current, scene.current);
+		attachRenderer(renderer.current, systemContainer.current);
 		setLoading(false);
 	}, []);
 
