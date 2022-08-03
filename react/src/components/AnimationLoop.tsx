@@ -18,7 +18,6 @@ export default function AnimationLoop({ scene, renderer, system, wasm }: IAnimat
   function tick() {
     const stream = system.tick();
     const planetCoordinates = new Float32Array(wasm.memory.buffer, stream.offset(), stream.size());
-    console.log("planetCoordinates", planetCoordinates);
 
     for (let i = 0; i < planetCoordinates.length; i += 3) {
       const sphere = scene.getObjectByName(getSphereName(i / 3));
@@ -34,6 +33,7 @@ export default function AnimationLoop({ scene, renderer, system, wasm }: IAnimat
 
   useEffect(() => {
     tick();
+    return () => animationRequestId.current ? cancelAnimationFrame(animationRequestId.current) : undefined
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
