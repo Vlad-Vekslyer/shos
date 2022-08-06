@@ -1,5 +1,4 @@
 use crate::{bytestream::ByteStream, planet::Planet};
-use serde::*;
 use wasm_bindgen::prelude::*;
 use web_sys;
 
@@ -35,8 +34,8 @@ impl System {
 impl System {
     #[wasm_bindgen(constructor)]
     pub fn new() -> System {
-        let planets = vec![Planet::new(0.2), Planet::new(0.1)];
-        let planets_coords: Vec<f32> = vec![0.0, 0.0, 0.2, 0.0];
+        let planets = vec![Planet::new(0.1, 0.2, 0.0, 1.0)];
+        let planets_coords: Vec<f32> = vec![0.2, 0.0];
 
         if planets.len() * 2 != planets_coords.len() {
             panic!("Planet coordinates length must equal the number of planets by 2");
