@@ -16,17 +16,16 @@ interface Planet {
 function initializePlanets(wasm: InitOutput | null, system: WasmSystem | null): Planet[] {
 	if (!wasm || !system) throw new Error("Missing WebAssembly data");
 
-	const stream = system.getPlanetCoordinates();
-	const planetCoordinates = new Float32Array(wasm.memory.buffer, stream.offset(), stream.size());
+	const initialPlanetData = system.getInitialPlanetData();
 
-	if (planetCoordinates.length % 3 !== 0) throw new Error("Wasm memory buffer length must be divisible by 3")
+	if (initialPlanetData.length % 3 !== 0) throw new Error("Wasm memory buffer length must be divisible by 3")
 
 	let planets: Planet[] = [];
-	for (let i = 0; i < planetCoordinates.length; i += 3) {
+	for (let i = 0; i < initialPlanetData.length; i += 3) {
 		planets.push({
-			x: planetCoordinates[i],
-			y: planetCoordinates[i + 1],
-			radius: planetCoordinates[i + 2]
+			x: initialPlanetData[i],
+			y: initialPlanetData[i + 1],
+			radius: initialPlanetData[i + 2]
 		})
 	}
 	return planets;

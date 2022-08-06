@@ -1,4 +1,5 @@
 use crate::{bytestream::ByteStream, planet::Planet};
+use serde::*;
 use wasm_bindgen::prelude::*;
 use web_sys;
 
@@ -10,25 +11,23 @@ macro_rules! log {
 
 #[wasm_bindgen]
 pub struct System {
-    planet_count: usize,
-    planet_slices: Vec<f32>,
+    planets: Vec<Planet>,
+    planets_coords: Vec<f32>,
 }
 
 impl System {
-    fn get_planet_slice(&self, planet_num: usize) -> [f32; 3] {
-        let starting_index = planet_num * 3;
+    fn get_planet_coords(&self, planet_num: usize) -> [f32; 2] {
+        let starting_index = planet_num * 2;
         [
-            self.planet_slices[starting_index],
-            self.planet_slices[starting_index + 1],
-            self.planet_slices[starting_index + 2],
+            self.planets_coords[starting_index],
+            self.planets_coords[starting_index + 1],
         ]
     }
 
-    fn set_planet_slice(&mut self, planet_num: usize, planet_slice: [f32; 3]) {
-        let starting_index = planet_num * 3;
-        self.planet_slices[starting_index] = planet_slice[0];
-        self.planet_slices[starting_index + 1] = planet_slice[1];
-        self.planet_slices[starting_index + 2] = planet_slice[2];
+    fn set_planet_coords(&mut self, planet_num: usize, coords: [f32; 2]) {
+        let starting_index = planet_num * 2;
+        self.planets_coords[starting_index] = coords[0];
+        self.planets_coords[starting_index + 1] = coords[1];
     }
 }
 
@@ -36,35 +35,42 @@ impl System {
 impl System {
     #[wasm_bindgen(constructor)]
     pub fn new() -> System {
-        let planets = vec![Planet::new(0.0, 0.0, 0.2), Planet::new(0.2, 0.0, 0.1)];
+        let planets = vec![Planet::new(0.2), Planet::new(0.1)];
+        let planets_coords: Vec<f32> = vec![0.0, 0.0, 0.2, 0.0];
 
-        let mut planet_slices: Vec<f32> = vec![];
-        for planet in &planets {
-            let slice = planet.as_slice();
-            for value in slice {
-                planet_slices.push(value);
-            }
+        if planets.len() * 2 != planets_coords.len() {
+            panic!("Planet coordinates length must equal the number of planets by 2");
         }
 
         System {
-            planet_slices,
-            planet_count: planets.len(),
+            planets_coords,
+            planets,
         }
+    }
+
+    #[wasm_bindgen(js_name = "getInitialPlanetData")]
+    pub fn initial_planet_data(&self) -> JsValue {
+        let mut data: Vec<f32> = vec![];
+
+        for index in 0..self.planets.len() {
+            let planet = &self.planets[index];
+            let coords = self.get_planet_coords(index);
+
+            data.push(coords[0]);
+            data.push(coords[1]);
+            data.push(planet.radius)
+        }
+        JsValue::from_serde(&data).unwrap()
     }
 
     #[wasm_bindgen(js_name = "getPlanetCoordinates")]
     pub fn planets_coordinates(&self) -> ByteStream {
-        log!("{:?}", self.planet_slices);
-        ByteStream::new(&self.planet_slices)
+        log!("{:?}", self.planets_coords);
+        ByteStream::new(&self.planets_coords)
     }
 
     pub fn tick(&mut self) -> ByteStream {
-        for planet_num in 1..self.planet_count {
-            let mut planet_slice = self.get_planet_slice(planet_num);
-            planet_slice[0] += 0.01;
-            planet_slice[1] += 0.01;
-            self.set_planet_slice(planet_num, planet_slice);
-        }
+        for planet in &self.planets {}
         self.planets_coordinates()
     }
 }

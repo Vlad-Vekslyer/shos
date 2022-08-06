@@ -19,8 +19,8 @@ export default function AnimationLoop({ scene, renderer, system, wasm }: IAnimat
     const stream = system.tick();
     const planetCoordinates = new Float32Array(wasm.memory.buffer, stream.offset(), stream.size());
 
-    for (let i = 0; i < planetCoordinates.length; i += 3) {
-      const sphere = scene.getObjectByName(getSphereName(i / 3));
+    for (let i = 0; i < planetCoordinates.length; i += 2) {
+      const sphere = scene.getObjectByName(getSphereName(i / 2));
       if (!sphere) throw new Error("Missing sphere in scene");
 
       sphere.position.x = planetCoordinates[i];

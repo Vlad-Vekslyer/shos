@@ -1,14 +1,9 @@
 pub struct Planet {
-    radius: f32,
-    x: f32,
-    y: f32,
+    pub radius: f32,
 }
 
 impl Planet {
-    pub fn new(x: f32, y: f32, radius: f32) -> Planet {
-        Planet { x, y, radius }
-    }
-    pub fn as_slice(&self) -> [f32; 3] {
-        [self.x, self.y, self.radius]
+    pub fn new(radius: f32) -> Planet {
+        Planet { radius }
     }
 }
