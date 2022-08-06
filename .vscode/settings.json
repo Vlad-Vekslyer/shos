@@ -1,5 +1,8 @@
 {
     "editor.tabSize": 2,
     "eslint.enable": true,
-    "stylelint.enable": false
+    "stylelint.enable": false,
+    "cSpell.words": [
+        "powf"
+    ]
 }
