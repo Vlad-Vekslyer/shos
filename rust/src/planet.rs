@@ -62,6 +62,10 @@ pub struct Planet {
     semi_major_axis: f32,
     semi_minor_axis: f32,
     angle: f32,
+    //  keep track of planet coordinates as if the orbit followed the standard ellipse equation.
+    //  these coordinates then get transformed to match the actual ellipse equation of the orbit
+    // https://www.maa.org/external_archive/joma/Volume8/Kalman/General.html
+    standard_coords: [f32; 2],
 }
 
 impl Planet {
@@ -79,6 +83,7 @@ impl Planet {
             semi_minor_axis,
             eccentricity,
             angle,
+            standard_coords: [semi_major_axis, 0.0],
         }
     }
 
@@ -89,10 +94,16 @@ impl Planet {
         }
     }
 
-    // https://math.stackexchange.com/questions/426150/what-is-the-general-equation-of-the-ellipse-that-is-not-in-the-origin-and-rotate
-    pub fn calculate_next_y_coord(&self, next_x: f32, current_y: f32) -> f32 {
-        let next_y = (self.semi_minor_axis * (self.semi_major_axis.powi(2) - next_x.powi(2)))
+    pub fn tick(&mut self) -> [f32; 2] {
+        let next_standard_x = self.standard_coords[0] + 0.01;
+        let next_standard_y = (self.semi_minor_axis
+            * (self.semi_major_axis.powi(2) - next_standard_x.powi(2)))
             / self.semi_major_axis;
-        0.0
+
+        self.standard_coords = [next_standard_x, next_standard_y];
+        self.transform_standard_coords()
     }
+
+    // rotate and translate
+    fn transform_standard_coords(&self) -> [f32; 2] {}
 }
