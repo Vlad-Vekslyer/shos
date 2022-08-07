@@ -3,6 +3,7 @@
     "eslint.enable": true,
     "stylelint.enable": false,
     "cSpell.words": [
-        "powf"
+        "powf",
+        "powi"
     ]
 }
