@@ -69,7 +69,10 @@ impl System {
     }
 
     pub fn tick(&mut self) -> ByteStream {
-        for planet in &self.planets {}
+        for index in 0..self.planets.len() {
+            let planet = &self.planets[index];
+            self.set_planet_coords(index, planet.tick());
+        }
         self.planets_coordinates()
     }
 }
