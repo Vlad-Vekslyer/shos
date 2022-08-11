@@ -57,6 +57,12 @@ fn calculate_pythagorean(a: f32, b: f32) -> f32 {
     (a.powi(2) + b.powi(2)).sqrt()
 }
 
+#[derive(Copy, Clone)]
+enum Direction {
+    Left,
+    Right,
+}
+
 pub struct Planet {
     pub radius: f32,
     semi_major_axis: f32,
@@ -66,6 +72,7 @@ pub struct Planet {
     //  these coordinates then get transformed to match the actual ellipse equation of the orbit
     // https://www.maa.org/external_archive/joma/Volume8/Kalman/General.html
     standard_coords: [f32; 2],
+    direction: Direction,
 }
 
 impl Planet {
@@ -83,6 +90,7 @@ impl Planet {
             semi_minor_axis,
             angle,
             standard_coords: [semi_major_axis, 0.0],
+            direction: Direction::Left,
         }
     }
 
@@ -94,13 +102,38 @@ impl Planet {
     }
 
     pub fn tick(&mut self) -> [f32; 2] {
-        let next_standard_x = self.standard_coords[0] + 0.01;
+        let x_movement = 0.01;
+        self.update_direction(x_movement);
+
+        let x_addition = match self.direction {
+            Direction::Left => -x_movement,
+            Direction::Right => x_movement,
+        };
+
+        let standard_x = self.standard_coords[0];
+        let next_standard_x = standard_x + x_addition;
+        self.update_standard_coords(next_standard_x);
+
+        self.transform_standard_coords()
+    }
+
+    fn update_standard_coords(&mut self, next_standard_x: f32) {
         let next_standard_y = (self.semi_minor_axis
             * (self.semi_major_axis.powi(2) - next_standard_x.powi(2)))
             / self.semi_major_axis;
 
         self.standard_coords = [next_standard_x, next_standard_y];
-        self.transform_standard_coords()
+    }
+
+    fn update_direction(&mut self, x_movement: f32) {
+        let standard_x = self.standard_coords[0];
+        self.direction = match self.direction {
+            Direction::Left if (standard_x - x_movement) < -self.semi_major_axis => {
+                Direction::Right
+            }
+            Direction::Right if (standard_x + x_movement) > self.semi_major_axis => Direction::Left,
+            _ => self.direction,
+        };
     }
 
     // rotate and translate
