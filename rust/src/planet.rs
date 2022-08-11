@@ -10,13 +10,18 @@ macro_rules! log {
 
 // https://www.mathsisfun.com/algebra/trig-solving-sss-triangles.html
 fn calculate_angle(initial_x: f32, initial_y: f32) -> f32 {
-    let side_a = initial_x.abs();
-    let side_c = initial_y.abs();
+    if initial_y == 0.0 {
+        return 0.0;
+    }
+
+    let side_a = initial_y.abs();
+    let side_c = initial_x.abs();
     let side_b = calculate_pythagorean(side_a, side_c);
 
-    let angle = ((side_b.powi(2) + side_c.powi(2) - side_a.powi(2)) / (2.0 * side_b * side_c))
-        .to_radians()
-        .acos();
+    log!("sides a{} b{} c{}", side_a, side_b, side_c);
+
+    let angle =
+        ((side_b.powi(2) + side_c.powi(2) - side_a.powi(2)) / (2.0 * side_b * side_c)).acos();
 
     log!("angle {}(radians)", angle);
     angle
@@ -138,7 +143,7 @@ impl Planet {
 
     // rotate and translate
     fn transform_standard_coords(&self) -> [f32; 2] {
-        // TODO: translate x to the right
+        // TODO: translate x to the left
         let standard_x = self.standard_coords[0];
         let standard_y = self.standard_coords[1];
         let transformed_x = (standard_x * self.angle.cos()) - (standard_y * self.angle.sin());
