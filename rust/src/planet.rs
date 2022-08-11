@@ -77,6 +77,7 @@ pub struct Planet {
     //  these coordinates then get transformed to match the actual ellipse equation of the orbit
     // https://www.maa.org/external_archive/joma/Volume8/Kalman/General.html
     standard_coords: [f32; 2],
+    translation: [f32; 2],
     direction: Direction,
 }
 
@@ -88,14 +89,27 @@ impl Planet {
         let eccentricity = calculate_eccentricity(initial_x, initial_y, semi_major_axis);
         let semi_minor_axis = calculate_semi_minor_axis(semi_major_axis, eccentricity);
         let angle = calculate_angle(initial_x, initial_y);
+        let standard_coords = [semi_major_axis, 0.0];
+
+        let transformed_coords =
+            Planet::transform_standard_coords(standard_coords, [0.0, 0.0], angle);
+        let x_translation = transformed_coords[0] - initial_x;
+        let y_translation = transformed_coords[1] - initial_y;
+
+        log!(
+            "x translation {} y translation {}",
+            x_translation,
+            y_translation
+        );
 
         Planet {
             radius,
             semi_major_axis,
             semi_minor_axis,
             angle,
-            standard_coords: [semi_major_axis, 0.0],
+            standard_coords,
             direction: Direction::Left,
+            translation: [x_translation, y_translation],
         }
     }
 
@@ -119,7 +133,7 @@ impl Planet {
         let next_standard_x = standard_x + x_addition;
         self.update_standard_coords(next_standard_x);
 
-        self.transform_standard_coords()
+        Planet::transform_standard_coords(self.standard_coords, self.translation, self.angle)
     }
 
     fn update_standard_coords(&mut self, next_standard_x: f32) {
@@ -142,12 +156,16 @@ impl Planet {
     }
 
     // rotate and translate
-    fn transform_standard_coords(&self) -> [f32; 2] {
+    fn transform_standard_coords(
+        standard_coords: [f32; 2],
+        translation: [f32; 2],
+        angle: f32,
+    ) -> [f32; 2] {
         // TODO: translate x to the left
-        let standard_x = self.standard_coords[0];
-        let standard_y = self.standard_coords[1];
-        let transformed_x = (standard_x * self.angle.cos()) - (standard_y * self.angle.sin());
-        let transformed_y = (standard_y * self.angle.cos()) + (standard_x * self.angle.sin());
+        let standard_x = standard_coords[0];
+        let standard_y = standard_coords[1];
+        let transformed_x = (standard_x * angle.cos()) - (standard_y * angle.sin());
+        let transformed_y = (standard_y * angle.cos()) + (standard_x * angle.sin());
         [transformed_x, transformed_y]
     }
 }
