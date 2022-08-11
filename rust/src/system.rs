@@ -35,7 +35,7 @@ impl System {
     #[wasm_bindgen(constructor)]
     pub fn new() -> System {
         let planets = vec![Planet::new(0.1, 0.2, 1.0, 2.0)];
-        let planets_coords: Vec<f32> = vec![0.2, 0.0];
+        let planets_coords: Vec<f32> = vec![0.2, -1.0];
 
         if planets.len() * 2 != planets_coords.len() {
             panic!("Planet coordinates length must equal the number of planets by 2");
@@ -70,8 +70,8 @@ impl System {
 
     pub fn tick(&mut self) -> ByteStream {
         for index in 0..self.planets.len() {
-            let planet = &self.planets[index];
-            self.set_planet_coords(index, planet.tick());
+            let [new_x, new_y] = self.planets[index].tick();
+            self.set_planet_coords(index, [new_x, -new_y]);
         }
         self.planets_coordinates()
     }

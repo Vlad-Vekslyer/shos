@@ -14,11 +14,12 @@ fn calculate_angle(initial_x: f32, initial_y: f32) -> f32 {
     let side_c = initial_y.abs();
     let side_b = calculate_pythagorean(side_a, side_c);
 
-    log!(
-        "angle {}(radians)",
-        ((side_b.powi(2) + side_c.powi(2) - side_a.powi(2)) / (2.0 * side_b * side_c)).acos()
-    );
-    ((side_b.powi(2) + side_c.powi(2) - side_a.powi(2)) / (2.0 * side_b * side_c)).acos()
+    let angle = ((side_b.powi(2) + side_c.powi(2) - side_a.powi(2)) / (2.0 * side_b * side_c))
+        .to_radians()
+        .acos();
+
+    log!("angle {}(radians)", angle);
+    angle
 }
 
 fn calculate_perihelion(initial_x: f32, initial_y: f32) -> f32 {
@@ -58,7 +59,6 @@ fn calculate_pythagorean(a: f32, b: f32) -> f32 {
 
 pub struct Planet {
     pub radius: f32,
-    eccentricity: f32,
     semi_major_axis: f32,
     semi_minor_axis: f32,
     angle: f32,
@@ -81,7 +81,6 @@ impl Planet {
             radius,
             semi_major_axis,
             semi_minor_axis,
-            eccentricity,
             angle,
             standard_coords: [semi_major_axis, 0.0],
         }
@@ -105,5 +104,12 @@ impl Planet {
     }
 
     // rotate and translate
-    fn transform_standard_coords(&self) -> [f32; 2] {}
+    fn transform_standard_coords(&self) -> [f32; 2] {
+        // TODO: translate x to the right
+        let standard_x = self.standard_coords[0];
+        let standard_y = self.standard_coords[1];
+        let transformed_x = (standard_x * self.angle.cos()) - (standard_y * self.angle.sin());
+        let transformed_y = (standard_y * self.angle.cos()) + (standard_x * self.angle.sin());
+        [transformed_x, transformed_y]
+    }
 }

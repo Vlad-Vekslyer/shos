@@ -1,3 +1,7 @@
+start:
+	$(MAKE) wasm-compile
+	$(MAKE) web-start
+
 web-start:
 	cd ./react; npm run start
 
