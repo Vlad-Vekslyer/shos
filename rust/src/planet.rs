@@ -151,9 +151,14 @@ impl Planet {
     }
 
     fn update_standard_coords(&mut self, next_standard_x: f32) {
-        let next_standard_y = (self.semi_minor_axis
+        let mut next_standard_y = (self.semi_minor_axis
             * (self.semi_major_axis.powi(2) - next_standard_x.powi(2)))
             / self.semi_major_axis;
+
+        next_standard_y = match self.direction {
+            Direction::Left => next_standard_y,
+            Direction::Right => -next_standard_y,
+        };
 
         self.standard_coords = [next_standard_x, next_standard_y];
     }
