@@ -1,5 +1,12 @@
 make --dry-run --always-make --keep-going --print-directory
 make: Entering directory '/home/vlad/Development/shos'
+make wasm-compile
+make[1]: Entering directory '/home/vlad/Development/shos'
+cd ./rust; wasm-pack build --out-dir ../react/src/pkg --target web
+make[1]: Leaving directory '/home/vlad/Development/shos'
+make web-start
+make[1]: Entering directory '/home/vlad/Development/shos'
 cd ./react; npm run start
+make[1]: Leaving directory '/home/vlad/Development/shos'
 make: Leaving directory '/home/vlad/Development/shos'
  

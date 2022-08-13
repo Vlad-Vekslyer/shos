@@ -161,11 +161,12 @@ impl Planet {
         translation: [f32; 2],
         angle: f32,
     ) -> [f32; 2] {
-        // TODO: translate x to the left
-        let standard_x = standard_coords[0];
-        let standard_y = standard_coords[1];
-        let transformed_x = (standard_x * angle.cos()) - (standard_y * angle.sin());
-        let transformed_y = (standard_y * angle.cos()) + (standard_x * angle.sin());
+        let translated_x = standard_coords[0] + translation[0];
+        let translated_y = standard_coords[1] + translation[1];
+
+        let transformed_x = (translated_x * angle.cos()) - (translated_y * angle.sin());
+        let transformed_y = (translated_y * angle.cos()) + (translated_x * angle.sin());
+
         [transformed_x, transformed_y]
     }
 }
