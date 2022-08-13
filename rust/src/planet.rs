@@ -101,6 +101,20 @@ impl Planet {
             x_translation,
             y_translation
         );
+        log!("initial x {} initial y {}", initial_x, initial_y);
+
+        log!(
+            "transformed coords without translation {:?}",
+            Planet::transform_standard_coords(standard_coords, [0.0, 0.0], angle)
+        );
+        log!(
+            "transformed coords with translation {:?}",
+            Planet::transform_standard_coords(
+                standard_coords,
+                [x_translation, y_translation],
+                angle
+            )
+        );
 
         Planet {
             radius,
@@ -156,17 +170,18 @@ impl Planet {
     }
 
     // rotate and translate
+    // https://math.stackexchange.com/a/434482
     fn transform_standard_coords(
         standard_coords: [f32; 2],
         translation: [f32; 2],
         angle: f32,
     ) -> [f32; 2] {
-        let translated_x = standard_coords[0] + translation[0];
-        let translated_y = standard_coords[1] + translation[1];
+        let standard_x = standard_coords[0];
+        let standard_y = standard_coords[1];
 
-        let transformed_x = (translated_x * angle.cos()) - (translated_y * angle.sin());
-        let transformed_y = (translated_y * angle.cos()) + (translated_x * angle.sin());
+        let rotated_x = (standard_x * angle.cos()) - (standard_y * angle.sin());
+        let rotated_y = (standard_y * angle.cos()) + (standard_x * angle.sin());
 
-        [transformed_x, transformed_y]
+        [rotated_x - translation[0], rotated_y - translation[1]]
     }
 }
