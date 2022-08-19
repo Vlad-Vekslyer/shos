@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { useAsyncEffect } from "use-async-effect";
 import getSphereName from "../3d-utils/getSphereName";
 
+import mercuryTexture from '../assets/mercury.jpg';
 import isometricCamera from "../3d-utils/isometricCamera";
 import init, { InitOutput, System as WasmSystem } from "../pkg/rust";
 import AnimationLoop from "./AnimationLoop";
@@ -31,18 +32,24 @@ function initializePlanets(wasm: InitOutput | null, system: WasmSystem | null): 
 	return planets;
 }
 
-function addPlanetsToScene(planets: Planet[], scene: THREE.Scene): void {
-	planets.forEach((planet, i) => {
-		const material = new THREE.MeshNormalMaterial();
-		const sphere = new THREE.SphereGeometry(planet.radius);
-		const mesh = new THREE.Mesh(sphere, material);
+async function addPlanetsToScene(planets: Planet[], scene: THREE.Scene): Promise<void> {
+	const promises = planets.map((planet, i) => {
+		return new Promise<void>(resolve => {
+			new THREE.TextureLoader().load(mercuryTexture, texture => {
+				const material = new THREE.MeshBasicMaterial({ map: texture });
+				const sphere = new THREE.SphereGeometry(planet.radius);
+				const mesh = new THREE.Mesh(sphere, material);
 
-		mesh.position.x = planet.x;
-		mesh.position.z = planet.y;
-		mesh.name = getSphereName(i);
+				mesh.position.x = planet.x;
+				mesh.position.z = planet.y;
+				mesh.name = getSphereName(i);
 
-		scene.add(mesh);
-	})
+				scene.add(mesh);
+				resolve();
+			});
+		})
+	});
+	await Promise.all(promises);
 }
 
 function addAxesHelperToScene(scene: THREE.Scene): void {
@@ -77,7 +84,7 @@ export default function System(): JSX.Element {
 		system.current = new WasmSystem();
 
 		const planets = initializePlanets(wasm.current, system.current);
-		addPlanetsToScene(planets, scene.current);
+		await addPlanetsToScene(planets, scene.current);
 		addAxesHelperToScene(scene.current);
 		configureRenderer(renderer.current, scene.current);
 		attachRenderer(renderer.current, systemContainer.current);
