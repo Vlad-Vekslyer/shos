@@ -7,7 +7,7 @@ import { InitOutput, System } from "../pkg/rust";
 
 interface IAnimationLoop {
   scene: THREE.Scene,
-  renderer: THREE.WebGL1Renderer,
+  renderer: THREE.WebGLRenderer,
   system: System,
   wasm: InitOutput
 }
