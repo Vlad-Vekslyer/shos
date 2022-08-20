@@ -7,7 +7,7 @@ import init, { InitOutput, System as WasmSystem } from "../pkg/rust";
 import { Planet } from "../interfaces";
 import AnimationLoop from "./AnimationLoop";
 import { configureRenderer, attachRenderer } from "../three-utils/renderer";
-import { addPlanetsToScene, addLightsToScene, addHelpersToScene } from "../three-utils/scene";
+import { addPlanetsToScene, addAmbientLightToScene, addHelpersToScene, addSunToScene } from "../three-utils/scene";
 
 
 function initializePlanets(wasm: InitOutput | null, system: WasmSystem | null): Planet[] {
@@ -46,9 +46,10 @@ export default function System(): JSX.Element {
 
 		const planets = initializePlanets(wasm.current, system.current);
 
+		addSunToScene(scene.current);
 		await addPlanetsToScene(planets, scene.current);
-		const [pointLight] = addLightsToScene(scene.current);
-		addHelpersToScene(scene.current, pointLight);
+		addAmbientLightToScene(scene.current);
+		addHelpersToScene(scene.current);
 		configureRenderer(renderer.current, scene.current);
 		attachRenderer(renderer.current, systemContainer.current);
 		setLoading(false);

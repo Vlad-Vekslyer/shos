@@ -10,6 +10,7 @@ import haumeaTexture from '../assets/haumea.jpg';
 import makemakeTexture from '../assets/makemake.jpg';
 import marsTexture from '../assets/mars.jpg';
 import saturnTexture from '../assets/saturn.jpg';
+import sunTexture from '../assets/sun.jpg';
 
 function loadTextures(): Promise<THREE.Texture[]> {
   const textureLoader = new THREE.TextureLoader();
@@ -31,6 +32,20 @@ function loadTextures(): Promise<THREE.Texture[]> {
   return Promise.all(promises);
 }
 
+export function addSunToScene(scene: THREE.Scene): void {
+  const texture = new THREE.TextureLoader().load(sunTexture);
+
+  const material = new THREE.MeshStandardMaterial({ map: texture });
+  const sphere = new THREE.SphereGeometry(0.5);
+  const mesh = new THREE.Mesh(sphere, material);
+
+  const pointLight = new THREE.PointLight(0xffffff, 2, 50);
+  pointLight.castShadow = true;
+
+  mesh.add(pointLight);
+  scene.add(mesh);
+}
+
 export async function addPlanetsToScene(planets: Planet[], scene: THREE.Scene): Promise<void> {
   const textures = await loadTextures();
   planets.forEach((planet, i) => {
@@ -50,23 +65,15 @@ export async function addPlanetsToScene(planets: Planet[], scene: THREE.Scene): 
   });
 }
 
-export function addHelpersToScene(scene: THREE.Scene, light: THREE.PointLight): void {
+export function addHelpersToScene(scene: THREE.Scene): void {
   const axesHelper = new THREE.AxesHelper(1);
-  const lightHelper = new THREE.PointLightHelper(light, 2);
 
-  scene.add(lightHelper);
   scene.add(axesHelper);
 }
 
-export function addLightsToScene(scene: THREE.Scene): [THREE.PointLight, THREE.AmbientLight] {
+export function addAmbientLightToScene(scene: THREE.Scene): THREE.AmbientLight {
   const ambientLight = new THREE.AmbientLight(0x404040, 1);
   scene.add(ambientLight);
 
-  const pointLight = new THREE.PointLight(0xffffff, 2, 50);
-  pointLight.position.set(0, 0, 0);
-  scene.add(pointLight);
-
-  pointLight.castShadow = true;
-
-  return [pointLight, ambientLight];
+  return ambientLight;
 }
