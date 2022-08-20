@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
 import * as THREE from "three";
 import { useAsyncEffect } from "use-async-effect";
-import getSphereName from "../3d-utils/getSphereName";
+import getSphereName from "../three-utils/getSphereName";
 
 import mercuryTexture from '../assets/mercury.jpg';
-import isometricCamera from "../3d-utils/isometricCamera";
+import isometricCamera from "../three-utils/isometricCamera";
 import init, { InitOutput, System as WasmSystem } from "../pkg/rust";
 import AnimationLoop from "./AnimationLoop";
 
@@ -53,13 +53,30 @@ async function addPlanetsToScene(planets: Planet[], scene: THREE.Scene): Promise
 	await Promise.all(promises);
 }
 
-function addAxesHelperToScene(scene: THREE.Scene): void {
+function addHelpersToScene(scene: THREE.Scene, light: THREE.PointLight): void {
 	const axesHelper = new THREE.AxesHelper(1);
+	const lightHelper = new THREE.PointLightHelper(light, 2);
+
+	scene.add(lightHelper);
 	scene.add(axesHelper);
+}
+
+function addLightsToScene(scene: THREE.Scene): [THREE.PointLight, THREE.AmbientLight] {
+	const ambientLight = new THREE.AmbientLight(0x404040, 1);
+	scene.add(ambientLight);
+
+	const pointLight = new THREE.PointLight(0xffffff, 2, 50);
+	pointLight.position.set(0, 0, 0);
+	scene.add(pointLight);
+
+	pointLight.castShadow = true;
+
+	return [pointLight, ambientLight];
 }
 
 function configureRenderer(renderer: THREE.WebGLRenderer, scene: THREE.Scene): void {
 	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.shadowMap.enabled = true;
 	renderer.render(scene, isometricCamera);
 }
 
@@ -84,23 +101,11 @@ export default function System(): JSX.Element {
 		wasm.current = await init();
 		system.current = new WasmSystem();
 
-		const ambientLight = new THREE.AmbientLight(0x404040, 1);
-		scene.current.add(ambientLight);
-
-		const pointLight = new THREE.PointLight(0xffffff, 2, 50);
-		pointLight.position.set(0, 0, 0);
-		scene.current.add(pointLight);
-
-		pointLight.castShadow = true;
-
-		// const lightHelper = new THREE.PointLightHelper(pointLight, 2);
-		// scene.current.add(lightHelper);
-
-		renderer.current.shadowMap.enabled = true;
-
 		const planets = initializePlanets(wasm.current, system.current);
+
 		await addPlanetsToScene(planets, scene.current);
-		// addAxesHelperToScene(scene.current);
+		const [pointLight] = addLightsToScene(scene.current);
+		addHelpersToScene(scene.current, pointLight);
 		configureRenderer(renderer.current, scene.current);
 		attachRenderer(renderer.current, systemContainer.current);
 		setLoading(false);

@@ -1,8 +1,8 @@
 import { useRef } from "react";
 import { useEffect } from "react";
 import * as THREE from "three";
-import getSphereName from "../3d-utils/getSphereName";
-import isometricCamera from "../3d-utils/isometricCamera";
+import getSphereName from "../three-utils/getSphereName";
+import isometricCamera from "../three-utils/isometricCamera";
 import { InitOutput, System } from "../pkg/rust";
 
 interface IAnimationLoop {
