@@ -3,6 +3,8 @@
     "eslint.enable": true,
     "stylelint.enable": false,
     "cSpell.words": [
+        "haumea",
+        "makemake",
         "powf",
         "powi"
     ]
