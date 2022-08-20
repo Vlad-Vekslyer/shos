@@ -1,4 +1,6 @@
 import THREE from "three";
+
+import { Planet } from "../interfaces";
 import getSphereName from "./getSphereName";
 import mercuryTexture from '../assets/mercury.jpg';
 

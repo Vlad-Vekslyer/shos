@@ -1,18 +1,14 @@
-import { useRef, useState } from "react";
 import * as THREE from "three";
+import { useRef, useState } from "react";
 import { useAsyncEffect } from "use-async-effect";
 
 import init, { InitOutput, System as WasmSystem } from "../pkg/rust";
 
+import { Planet } from "../interfaces";
 import AnimationLoop from "./AnimationLoop";
 import { configureRenderer, attachRenderer } from "../three-utils/renderer";
 import { addPlanetsToScene, addLightsToScene, addHelpersToScene } from "../three-utils/scene";
 
-interface Planet {
-	x: number,
-	y: number,
-	radius: number
-}
 
 function initializePlanets(wasm: InitOutput | null, system: WasmSystem | null): Planet[] {
 	if (!wasm || !system) throw new Error("Missing WebAssembly data");
