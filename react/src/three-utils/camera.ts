@@ -9,9 +9,11 @@ isometricCamera.rotateY(-0.3)
 
 const topDownCamera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 10);
 
-isometricCamera.position.z = 0;
 topDownCamera.position.y = 5;
-isometricCamera.position.x = 0;
 topDownCamera.rotateX(-(Math.PI / 2));
 
-export { isometricCamera, topDownCamera }
+type CameraType = 'isometric' | 'top-down';
+
+export default function getCamera(type: CameraType = 'isometric') {
+  return type === 'isometric' ? isometricCamera : topDownCamera
+}

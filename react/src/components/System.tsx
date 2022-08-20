@@ -6,9 +6,8 @@ import init, { InitOutput, System as WasmSystem } from "../pkg/rust";
 
 import { Planet } from "../interfaces";
 import AnimationLoop from "./AnimationLoop";
-import { configureRenderer, attachRenderer } from "../three-utils/renderer";
+import { configureRenderer, attachRenderer, render } from "../three-utils/renderer";
 import { addPlanetsToScene, addAmbientLightToScene, addHelpersToScene, addSunToScene } from "../three-utils/scene";
-
 
 function initializePlanets(wasm: InitOutput | null, system: WasmSystem | null): Planet[] {
 	if (!wasm || !system) throw new Error("Missing WebAssembly data");
@@ -50,8 +49,9 @@ export default function System(): JSX.Element {
 		await addPlanetsToScene(planets, scene.current);
 		addAmbientLightToScene(scene.current);
 		addHelpersToScene(scene.current);
-		configureRenderer(renderer.current, scene.current);
+		configureRenderer(renderer.current);
 		attachRenderer(renderer.current, systemContainer.current);
+		render(renderer.current, scene.current);
 		setLoading(false);
 	}, []);
 

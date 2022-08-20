@@ -38,11 +38,17 @@ export function addSunToScene(scene: THREE.Scene): void {
   const material = new THREE.MeshStandardMaterial({ map: texture });
   const sphere = new THREE.SphereGeometry(0.5);
   const mesh = new THREE.Mesh(sphere, material);
+  mesh.layers.enable(1);
 
   const pointLight = new THREE.PointLight(0xffffff, 2, 50);
   pointLight.castShadow = true;
 
+  const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+  ambientLight.layers.set(1);
+
   mesh.add(pointLight);
+
+  scene.add(ambientLight);
   scene.add(mesh);
 }
 
