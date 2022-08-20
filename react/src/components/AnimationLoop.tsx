@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import * as THREE from "three";
 import getSphereName from "../three-utils/getSphereName";
-import isometricCamera from "../three-utils/isometricCamera";
+import { topDownCamera } from "../three-utils/camera";
 import { InitOutput, System } from "../pkg/rust";
 
 interface IAnimationLoop {
@@ -26,7 +26,7 @@ export default function AnimationLoop({ scene, renderer, system, wasm }: IAnimat
       sphere.position.x = planetCoordinates[i];
       sphere.position.z = planetCoordinates[i + 1];
     }
-    renderer.render(scene, isometricCamera);
+    renderer.render(scene, topDownCamera);
 
     animationRequestId.current = requestAnimationFrame(tick);
   }

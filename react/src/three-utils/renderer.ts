@@ -1,4 +1,4 @@
-import isometricCamera from "./isometricCamera";
+import { isometricCamera } from "./camera";
 
 export function configureRenderer(renderer: THREE.WebGLRenderer, scene: THREE.Scene): void {
   renderer.setSize(window.innerWidth, window.innerHeight);
