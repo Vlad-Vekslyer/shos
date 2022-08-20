@@ -3,6 +3,13 @@ import THREE from "three";
 import { Planet } from "../interfaces";
 import getSphereName from "./getSphereName";
 import mercuryTexture from '../assets/mercury.jpg';
+import ceresTexture from '../assets/ceres.jpg';
+import earthTexture from '../assets/earth.jpg';
+import erisTexture from '../assets/eris.jpg';
+import haumeaTexture from '../assets/haumea.jpg';
+import makemakeTexture from '../assets/makemake.jpg';
+import marsTexture from '../assets/mars.jpg';
+import saturnTexture from '../assets/saturn.jpg';
 
 export async function addPlanetsToScene(planets: Planet[], scene: THREE.Scene): Promise<void> {
   const promises = planets.map((planet, i) => {
