@@ -135,19 +135,30 @@ impl Planet {
     }
 
     pub fn tick(&mut self) -> [f32; 2] {
-        let x_movement = 0.01;
-        self.update_direction(x_movement);
-
-        let x_addition = match self.direction {
-            Direction::Left => -x_movement,
-            Direction::Right => x_movement,
-        };
+        let x_movement = self.get_x_movement();
+        self.update_direction();
 
         let standard_x = self.standard_coords[0];
-        let next_standard_x = standard_x + x_addition;
+        let next_standard_x = standard_x + x_movement;
         self.update_standard_coords(next_standard_x);
 
         Planet::transform_standard_coords(self.standard_coords, self.translation, self.angle)
+    }
+
+    fn get_x_movement(&self) -> f32 {
+        let movement = 0.01;
+        let standard_x = self.standard_coords[0];
+
+        match self.direction {
+            Direction::Left if (standard_x - movement) < -self.semi_major_axis => {
+                -(self.semi_major_axis - standard_x.abs())
+            }
+            Direction::Right if (standard_x + movement) > self.semi_major_axis => {
+                self.semi_major_axis - standard_x
+            }
+            Direction::Left => -movement,
+            Direction::Right => movement,
+        }
     }
 
     fn update_standard_coords(&mut self, next_standard_x: f32) {
@@ -163,13 +174,16 @@ impl Planet {
         self.standard_coords = [next_standard_x, next_standard_y];
     }
 
-    fn update_direction(&mut self, x_movement: f32) {
+    fn update_direction(&mut self) {
         let standard_x = self.standard_coords[0];
+
+        if standard_x < -self.semi_major_axis || standard_x > self.semi_major_axis {
+            panic!("Planet is out of bounds");
+        }
+
         self.direction = match self.direction {
-            Direction::Left if (standard_x - x_movement) < -self.semi_major_axis => {
-                Direction::Right
-            }
-            Direction::Right if (standard_x + x_movement) > self.semi_major_axis => Direction::Left,
+            Direction::Left if standard_x == -self.semi_major_axis => Direction::Right,
+            Direction::Right if standard_x == self.semi_major_axis => Direction::Left,
             _ => self.direction,
         };
     }

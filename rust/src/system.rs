@@ -36,9 +36,10 @@ impl System {
     pub fn new() -> System {
         let planets = vec![
             Planet::new(0.1, 0.2, 0.5, 1.0),
-            Planet::new(0.2, 0.5, 1.0, 1.5),
+            // Planet::new(0.2, 0.5, 1.0, 1.5),
         ];
-        let planets_coords: Vec<f32> = vec![0.2, -0.5, 0.5, -1.0];
+        // let planets_coords: Vec<f32> = vec![0.2, -0.5, 0.5, -1.0];
+        let planets_coords: Vec<f32> = vec![0.2, -0.5];
 
         if planets.len() * 2 != planets_coords.len() {
             panic!("Planet coordinates length must equal the number of planets by 2");
@@ -67,7 +68,6 @@ impl System {
 
     #[wasm_bindgen(js_name = "getPlanetCoordinates")]
     pub fn planets_coordinates(&self) -> ByteStream {
-        log!("{:?}", self.planets_coords);
         ByteStream::new(&self.planets_coords)
     }
 
