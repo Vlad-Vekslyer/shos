@@ -136,7 +136,6 @@ impl Planet {
 
     pub fn tick(&mut self) -> [f32; 2] {
         let x_distance = self.get_x_distance();
-        log!("x_distance {}", x_distance);
         self.update_direction(x_distance);
 
         let x_movement = match self.direction {
@@ -148,17 +147,19 @@ impl Planet {
         let next_standard_x = standard_x + x_movement;
         self.update_standard_coords(next_standard_x);
 
+        log!("new standard_x {}", self.standard_coords[0]);
+
         Planet::transform_standard_coords(self.standard_coords, self.translation, self.angle)
     }
 
     fn get_x_distance(&self) -> f32 {
-        let threshold = 0.008;
+        let threshold = 0.01;
         let standard_x = self.standard_coords[0];
         let distance_from_edge = self.semi_major_axis - standard_x.abs();
 
         match self.direction {
-            // Direction::Left if distance_from_edge < threshold => 0.001,
-            // Direction::Right if distance_from_edge < threshold => 0.001,
+            Direction::Left if distance_from_edge < threshold => 0.001,
+            Direction::Right if distance_from_edge < threshold => 0.001,
             _ => 0.01,
         }
     }
