@@ -147,21 +147,24 @@ impl Planet {
         let next_standard_x = standard_x + x_movement;
         self.update_standard_coords(next_standard_x);
 
-        log!("new standard_x {}", self.standard_coords[0]);
-
         Planet::transform_standard_coords(self.standard_coords, self.translation, self.angle)
     }
 
     fn get_x_distance(&self) -> f32 {
-        let threshold = 0.01;
+        let threshold = 0.2;
         let standard_x = self.standard_coords[0];
         let distance_from_edge = self.semi_major_axis - standard_x.abs();
 
-        match self.direction {
-            Direction::Left if distance_from_edge < threshold => 0.001,
-            Direction::Right if distance_from_edge < threshold => 0.001,
-            _ => 0.01,
+        let throttled_movement = ((0.01 / threshold) * distance_from_edge).max(0.0000001);
+        log!("throttled {}", throttled_movement);
+
+        if distance_from_edge == 0.0 {
+            return throttled_movement;
+        } else if distance_from_edge < threshold {
+            return throttled_movement;
         }
+
+        0.01
     }
 
     fn update_standard_coords(&mut self, next_standard_x: f32) {
