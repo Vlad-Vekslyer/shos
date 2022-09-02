@@ -138,46 +138,36 @@ impl Planet {
         let x_distance = self.get_x_distance();
         self.update_direction(x_distance);
 
-        let x_movement = match self.direction {
-            Direction::Left => -x_distance,
-            Direction::Right => x_distance,
-        };
-
-        let standard_x = self.standard_coords[0];
-        let next_standard_x = standard_x + x_movement;
-        self.update_standard_coords(next_standard_x);
+        let next_standard_x = self.get_next_standard_x(x_distance);
+        let next_standard_y = self.get_next_standard_y(next_standard_x);
+        self.standard_coords = [next_standard_x, next_standard_y];
 
         Planet::transform_standard_coords(self.standard_coords, self.translation, self.angle)
     }
 
     fn get_x_distance(&self) -> f32 {
-        let threshold = 0.2;
-        let standard_x = self.standard_coords[0];
-        let distance_from_edge = self.semi_major_axis - standard_x.abs();
-
-        let throttled_movement = ((0.01 / threshold) * distance_from_edge).max(0.0000001);
-        log!("throttled {}", throttled_movement);
-
-        if distance_from_edge == 0.0 {
-            return throttled_movement;
-        } else if distance_from_edge < threshold {
-            return throttled_movement;
-        }
-
-        0.01
+        0.006
     }
 
-    fn update_standard_coords(&mut self, next_standard_x: f32) {
-        let mut next_standard_y = (self.semi_minor_axis
+    fn get_next_standard_x(&self, x_distance: f32) -> f32 {
+        let standard_x = self.standard_coords[0];
+        let x_movement = match self.direction {
+            Direction::Left => -x_distance,
+            Direction::Right => x_distance,
+        };
+
+        standard_x + x_movement
+    }
+
+    fn get_next_standard_y(&self, next_standard_x: f32) -> f32 {
+        let next_standard_y = (self.semi_minor_axis
             * (self.semi_major_axis.powi(2) - next_standard_x.powi(2)).sqrt())
             / self.semi_major_axis;
 
-        next_standard_y = match self.direction {
+        match self.direction {
             Direction::Left => next_standard_y,
             Direction::Right => -next_standard_y,
-        };
-
-        self.standard_coords = [next_standard_x, next_standard_y];
+        }
     }
 
     fn update_direction(&mut self, x_distance: f32) {
