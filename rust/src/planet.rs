@@ -135,33 +135,36 @@ impl Planet {
     }
 
     pub fn tick(&mut self) -> [f32; 2] {
-        let standard_x = self.standard_coords[0];
-        if standard_x < -self.semi_major_axis || standard_x > self.semi_major_axis {
-            panic!("Planet is out of bounds");
-        }
+        let x_distance = self.get_x_distance();
+        self.update_direction(x_distance);
 
-        self.update_direction();
-        let next_standard_x = self.get_next_standard_x();
+        let x_movement = match self.direction {
+            Direction::Left => -x_distance,
+            Direction::Right => x_distance,
+        };
+
+        let standard_x = self.standard_coords[0];
+        let next_standard_x = standard_x + x_movement;
         self.update_standard_coords(next_standard_x);
 
         Planet::transform_standard_coords(self.standard_coords, self.translation, self.angle)
     }
 
-    fn get_next_standard_x(&self) -> f32 {
-        let distance = match self.direction {
-            Direction::Left => -0.01,
-            Direction::Right => 0.01,
-        };
-
+    fn get_x_distance(&self) -> f32 {
+        let threshold = 0.2;
         let standard_x = self.standard_coords[0];
-        let next_standard_x = (distance
-            / (1.0
-                + 0.5
-                    * ((self.semi_minor_axis * self.semi_major_axis)
-                        / self.semi_major_axis.powi(2))))
-            + standard_x;
+        let distance_from_edge = self.semi_major_axis - standard_x.abs();
 
-        next_standard_x
+        let throttled_movement = ((0.01 / threshold) * distance_from_edge).max(0.0000001);
+        log!("throttled {}", throttled_movement);
+
+        if distance_from_edge == 0.0 {
+            return throttled_movement;
+        } else if distance_from_edge < threshold {
+            return throttled_movement;
+        }
+
+        0.01
     }
 
     fn update_standard_coords(&mut self, next_standard_x: f32) {
@@ -177,14 +180,18 @@ impl Planet {
         self.standard_coords = [next_standard_x, next_standard_y];
     }
 
-    fn update_direction(&mut self) {
-        let potential_next_standard_x = self.get_next_standard_x();
+    fn update_direction(&mut self, x_distance: f32) {
+        let standard_x = self.standard_coords[0];
+
+        if standard_x < -self.semi_major_axis || standard_x > self.semi_major_axis {
+            panic!("Planet is out of bounds");
+        }
 
         self.direction = match self.direction {
-            Direction::Left if potential_next_standard_x < -self.semi_major_axis => {
+            Direction::Left if (standard_x - x_distance) < -self.semi_major_axis => {
                 Direction::Right
             }
-            Direction::Right if potential_next_standard_x > self.semi_major_axis => Direction::Left,
+            Direction::Right if (standard_x + x_distance) > self.semi_major_axis => Direction::Left,
             _ => self.direction,
         };
     }
