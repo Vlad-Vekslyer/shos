@@ -136,22 +136,39 @@ impl Planet {
 
     pub fn tick(&mut self) -> [f32; 2] {
         let x_distance = self.get_x_distance();
-        self.update_direction(x_distance);
+        self.direction = self.get_next_direction(x_distance);
 
-        let next_standard_x = self.get_next_standard_x(x_distance);
-        let next_standard_y = self.get_next_standard_y(next_standard_x);
+        let next_standard_x = self.get_next_standard_x(x_distance, self.direction);
+        let next_standard_y = self.get_next_standard_y(next_standard_x, self.direction);
         self.standard_coords = [next_standard_x, next_standard_y];
 
         Planet::transform_standard_coords(self.standard_coords, self.translation, self.angle)
     }
 
-    fn get_x_distance(&self) -> f32 {
-        0.006
+    fn get_x_distance(&mut self) -> f32 {
+        let mut x_distance = 0.007;
+        let standard_y = self.standard_coords[1];
+
+        loop {
+            let next_direction = self.get_next_direction(x_distance);
+
+            let next_standard_x = self.get_next_standard_x(x_distance, next_direction);
+            let next_standard_y = self.get_next_standard_y(next_standard_x, next_direction);
+
+            let y_distance = (next_standard_y - standard_y).abs();
+
+            if y_distance < 0.01 {
+                break;
+            }
+            x_distance = x_distance * 0.9;
+        }
+
+        x_distance
     }
 
-    fn get_next_standard_x(&self, x_distance: f32) -> f32 {
+    fn get_next_standard_x(&self, x_distance: f32, direction: Direction) -> f32 {
         let standard_x = self.standard_coords[0];
-        let x_movement = match self.direction {
+        let x_movement = match direction {
             Direction::Left => -x_distance,
             Direction::Right => x_distance,
         };
@@ -159,31 +176,31 @@ impl Planet {
         standard_x + x_movement
     }
 
-    fn get_next_standard_y(&self, next_standard_x: f32) -> f32 {
+    fn get_next_standard_y(&self, next_standard_x: f32, direction: Direction) -> f32 {
         let next_standard_y = (self.semi_minor_axis
             * (self.semi_major_axis.powi(2) - next_standard_x.powi(2)).sqrt())
             / self.semi_major_axis;
 
-        match self.direction {
+        match direction {
             Direction::Left => next_standard_y,
             Direction::Right => -next_standard_y,
         }
     }
 
-    fn update_direction(&mut self, x_distance: f32) {
+    fn get_next_direction(&self, x_distance: f32) -> Direction {
         let standard_x = self.standard_coords[0];
 
         if standard_x < -self.semi_major_axis || standard_x > self.semi_major_axis {
             panic!("Planet is out of bounds");
         }
 
-        self.direction = match self.direction {
+        match self.direction {
             Direction::Left if (standard_x - x_distance) < -self.semi_major_axis => {
                 Direction::Right
             }
             Direction::Right if (standard_x + x_distance) > self.semi_major_axis => Direction::Left,
             _ => self.direction,
-        };
+        }
     }
 
     // rotate and translate
